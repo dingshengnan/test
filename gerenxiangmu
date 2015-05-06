@@ -1,0 +1,207 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Date;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+public class EnglishGame implements ActionListener
+{
+private static JFrame f = new JFrame("英文打字游戏");
+private static Container con = f.getContentPane();
+JPanel mainPanel,panel0,panel1,panel2,panel3,panel4,panel5;
+JButton button1,button2,button3,button4,button;
+JTextPane tp1,tp2;
+FileReader fr;
+File frr;
+Date date1,date2;
+int num,len1,len2,count;
+long time;
+double rightrate;
+char[] ch;
+public void actionPerformed(ActionEvent e)
+ {
+// TODO Auto-generated method stub
+String cmd = e.getActionCommand();
+date1=new Date();
+if (cmd.equals("4.退出"))
+{
+System.exit(0);
+}
+else if(cmd.equals("返回"))
+{
+}
+else
+{
+JFrame f1 = new JFrame("英文打字游戏");
+f1.setSize(350, 750);
+f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+Container con1 = f1.getContentPane();
+panel0 = new JPanel();
+panel1 = new JPanel();
+panel2 = new JPanel();
+panel3 = new JPanel();
+panel4 = new JPanel();
+tp1=new JTextPane();
+tp1.setBackground(Color.pink);
+Font size=new Font("ad",Font.BOLD,20);
+tp1.setFont(size);
+tp1.setPreferredSize(new Dimension(300,300));
+tp1.setForeground(Color.white);
+tp2=new JTextPane();
+tp2.setBackground(Color.lightGray);
+tp2.setFont(size);
+tp2.setPreferredSize(new Dimension(300,300));
+try
+{
+if (cmd.equals("1.简单"))
+{
+fr=new FileReader("D:\\简单.txt");
+frr=new File("D:\\简单.txt");
+num=(int)frr.length();
+ch=new char[num];
+while(fr.read(ch)!=-1)
+{
+String str=new String(ch);
+tp1.setText(str);
+}
+}
+else if (cmd.equals("2.普通"))
+{
+fr=new FileReader("D:\\普通.txt");          
+frr=new File("D:\\普通.txt");          
+num=(int)frr.length();          
+ch=new char[num];          
+while(fr.read(ch)!=-1)          
+{           
+String str=new String(ch);
+tp1.setText(str);
+}
+}
+else if(cmd.equals("3.困难"))
+{
+fr=new FileReader("D:\\困难.txt");
+frr=new File("D:\\困难.txt");
+num=(int)frr.length();
+ch=new char[num];
+while(fr.read(ch)!=-1)
+{
+String str=new String(ch);
+tp1.setText(str);
+}
+}
+}
+catch(Exception arg)
+{
+System.out.println(arg);
+}
+button=new JButton("返回");
+button.addActionListener(this);
+panel1.add(new JLabel("参考练习："));
+panel1.add(button);     
+panel2.add(tp1);
+panel3.add(new JLabel("练习状况："));
+panel4.add(tp2);
+panel0.add(panel1);
+panel0.add(panel2);
+panel0.add(panel3);
+panel0.add(panel4);
+con1.add(panel0);
+f1.setVisible(true);
+tp2.requestFocus(true);
+date1=new Date();
+tp2.addKeyListener(new MyKey());
+}
+}
+private class MyKey extends KeyAdapter
+{
+public void keyReleased(KeyEvent arg0) 
+{
+// TODO Auto-generated method stub
+len1=tp1.getText().length();
+len2=tp2.getText().length();
+if(len2==len1)
+{
+JFrame f2 = new JFrame("英文打字游戏");
+f2.setSize(250, 150);
+f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+Container con2 = f2.getContentPane();
+date2=new Date();
+time=(date2.getTime()-date1.getTime())/1000;
+count=0;
+for(int i=0;i<len1;i++)
+{
+if(tp2.getText().toString().charAt(i)==tp1.getText().toString().charAt(i))
+count++;
+}
+rightrate=(double)count/len1*100;
+panel0 = new JPanel();
+panel1 = new JPanel();
+panel2 = new JPanel();
+panel3 = new JPanel();
+panel1.add(new JLabel("恭喜完成本次游戏测试！"));
+panel2.add(new JLabel("游戏总共耗时："+time+"秒"));
+panel3.add(new JLabel("您的正确率为："+rightrate+"%"));
+panel0.add(panel1);
+panel0.add(panel2);
+panel0.add(panel3);
+con2.add(panel0);
+f2.setVisible(true);
+}
+else if(len2>len1)
+{
+System.exit(0);
+}
+}
+}
+public static void main(String[] args)
+ {
+// TODO Auto-generated method stub
+f.setSize(200, 300);
+f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+con.add(new EnglishGame().creatMenu());
+f.setVisible(true);
+}
+public JPanel creatMenu() 
+{
+mainPanel = new JPanel();
+panel0 = new JPanel();
+panel1 = new JPanel();
+panel2 = new JPanel();
+panel3 = new JPanel();
+panel4 = new JPanel();
+panel5 = new JPanel();
+button1 = new JButton("1.简单");
+button2 = new JButton("2.普通");
+button3 = new JButton("3.困难");
+button4 = new JButton("4.退出");
+panel0.add(new JLabel("欢迎使用英文打字测试系统"));
+panel1.add(new JLabel("请选择游戏难度："));
+button1.addActionListener(this);
+button2.addActionListener(this);
+button3.addActionListener(this);
+button4.addActionListener(this);
+panel2.add(button1);
+panel3.add(button2);
+panel4.add(button3);
+panel5.add(button4);
+mainPanel.add(panel0);
+mainPanel.add(panel1);
+mainPanel.add(panel2);
+mainPanel.add(panel3);
+mainPanel.add(panel4);
+mainPanel.add(panel5);
+mainPanel.setVisible(true);
+return mainPanel;
+}
+}
